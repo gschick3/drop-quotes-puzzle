@@ -6,7 +6,7 @@ class Board {
 
 	private String quote;
 	private int rows;
-	private int columns;
+	int columns;
 
 	private char[][] quoteArray;
 	private char[][] clues;
@@ -41,79 +41,93 @@ class Board {
 	}
 
 	private char[] normalizeString(String string) {
-		//new
 		string = addWhitespace(string.toUpperCase(), this.rows);
 		return string.toCharArray();
 	}
 
 	private static String addWhitespace(String string, int rows) {
-		double whitespace = (rows - (string.length() % rows)) / 2; // whitespace on each end
+		double whitespace = (rows - (string.length() % rows)) / 2.0; // whitespace on each end
+		
+		StringBuffer result = new StringBuffer();
 
 		for (int i = 0; i < (int) Math.floor(whitespace); i++)
-			string = " " + string;
-
+			result.append(" ");
+		
+		result.append(string);
+		
 		for (int i = 0; i < (int) Math.ceil(whitespace); i++)
-			string += " ";
-
-		return string;
+			result.append(" ");
+		
+		return result.toString();
 	}
-
-	public void print() {
+	
+	public String format() {
 		/** Display current playing board */
-
-		System.out.println("\n\n");
-
-		printClues();
-		printHorizontalLine(this.columns);
-
-		printBoxes();
-
-		printHorizontalLine(this.columns);
-		printColumnNumbers();
+		StringBuffer result = new StringBuffer("\n\n");
+		
+		result.append(this.formatClues());
+		result.append(this.formatHorizontalLine());
+		
+		result.append(this.formatBoxes());
+		
+		result.append(this.formatHorizontalLine());
+		result.append(this.formatColumnNumbers());
+		
+		return result.toString();
 	}
 
-	private void printClues() {
+	public String formatClues() {
+		StringBuffer result = new StringBuffer();
 		for (int i = 0; i < this.clues[0].length; i++) {
-			System.out.print("  ");
+			result.append("  ");
 			for (int j = 0; j < this.clues.length; j++) {
-				System.out.print(separator + separator);
+				result.append(separator + separator);
 				if (this.clues[j][i] == space)
-					System.out.print(' ');
+					result.append(' ');
 				else
-					System.out.print(this.clues[j][i]);
+					result.append(this.clues[j][i]);
 			}
-			System.out.println(separator);
+			result.append(separator);
+			result.append("\n");
 		}
+		return result.toString();
 	}
 
-	private static void printHorizontalLine(int length) {
-		System.out.print("  ");
-		for (int i = 0; i < length; i++)
-			System.out.print("---");
-		System.out.println();
+	public String formatHorizontalLine() {
+		StringBuffer result = new StringBuffer("  ");
+		for (int i = 0; i < this.columns; i++)
+			result.append("---");
+		result.append("\n");
+		
+		return result.toString();
 	}
 
-	private void printBoxes() {
+	public String formatBoxes() {
+		StringBuffer result = new StringBuffer();
 		for (int r = 0; r < this.rows; r++) {
-			System.out.print((char) (r + 'A') + separator); // row letter
+			result.append((char) (r + 'A') + separator); // row letter
 			for (int c = 0; c < this.columns; c++) {
-				System.out.print(separator + separator + this.currentBoard[r][c]);
+				result.append(separator + separator + this.currentBoard[r][c]);
 			}
-			System.out.println(separator);
+			result.append(separator);
+			result.append("\n");
 			if (r != this.rows - 1)
-				System.out.println(); // end of row
+				result.append("\n"); // end of row
 		}
+		return result.toString();
 	}
 
-	private void printColumnNumbers() {
-		System.out.print("  ");
+	public String formatColumnNumbers() {
+		StringBuffer result = new StringBuffer("  ");
 		for (int i = 0; i < this.columns; i++) {
-			System.out.print(separator);
+			result.append(separator);
 			if (i < 10)
-				System.out.print(' ');
-			System.out.print(i); // display column numbers under board
+				result.append(' ');
+			result.append(i); // display column numbers under board
 		}
-		System.out.println(separator);
+		result.append(separator);
+		result.append("\n");
+		return result.toString();
 	}
 
 	public boolean input(char row, int colNum, char letter) {
@@ -148,7 +162,8 @@ class Board {
 				}
 			}
 		}
-		System.out.println("You have " + errors + " errors and " + emptySpaces + " blank spaces.");
-		return errors > 0 || emptySpaces > 0 ? false : true;
+		System.out.println("You have " + errors + " error(s) and " + emptySpaces + " blank space(s).");
+		return errors == 0 && emptySpaces == 0;
 	}
+
 }

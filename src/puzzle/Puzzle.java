@@ -4,13 +4,14 @@ import java.util.Scanner;
 class Puzzle {
 	public static void main(String[] args) {
 		boolean end = false;
-		String quote = "People who work crossword puzzles know that if they stop making progress they should put the puzzle down for a while";
-
-		Board board = new Board(quote, 6);
+		String quote = "Test";
+		int rows = 2;
+		
+		Board board = new Board(quote, rows);
 
 		Scanner input = new Scanner(System.in);
 		while (!end) {
-			board.print();
+			System.out.print(board.format());
 			System.out.print("Guess (help/check/quit): ");
 			String guess = input.next().toLowerCase();
 			input.nextLine(); // just in case there is extra input
@@ -26,7 +27,7 @@ class Puzzle {
 				break;
 			default:
 				System.out.print("[Row] [Column]: ");
-				char row = input.next().charAt(0); // apparently there is no nextChar
+				char row = input.next().charAt(0);
 				int col = input.nextInt();
 				char letter = guess.charAt(0);
 				board.input(row, col, letter);
