@@ -1,3 +1,4 @@
+package puzzle;
 import java.util.Scanner;
 
 class Puzzle {

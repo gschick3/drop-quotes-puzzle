@@ -1,3 +1,4 @@
+package puzzle;
 class Board {
 	private static char emptySpace = '_';
 	private static char space = '/';
