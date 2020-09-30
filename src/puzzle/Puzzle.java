@@ -1,4 +1,5 @@
 package puzzle;
+
 import java.util.Scanner;
 
 class Puzzle {
@@ -6,12 +7,14 @@ class Puzzle {
 		boolean end = false;
 		String quote = "Test";
 		int rows = 2;
-		
+
 		Board board = new Board(quote, rows);
+		BoardFormat boardFormatter = new BoardFormat(board);
 
 		Scanner input = new Scanner(System.in);
 		while (!end) {
-			System.out.print(board.format());
+			boardFormatter.updateBoard(board);
+			System.out.print(boardFormatter.format());
 			System.out.print("Guess (help/check/quit): ");
 			String guess = input.next().toLowerCase();
 			input.nextLine(); // just in case there is extra input

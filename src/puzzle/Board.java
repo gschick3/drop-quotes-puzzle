@@ -1,8 +1,8 @@
 package puzzle;
+
 class Board {
 	private static char emptySpace = '_';
-	private static char space = '/';
-	private static String separator = "|";
+	public char space = '/';
 
 	private String quote;
 	private int rows;
@@ -40,6 +40,14 @@ class Board {
 		}
 	}
 
+	public char[][] getCurrentBoard() {
+		return currentBoard;
+	}
+
+	public char[][] getClues() {
+		return clues;
+	}
+
 	private char[] normalizeString(String string) {
 		string = addWhitespace(string.toUpperCase(), this.rows);
 		return string.toCharArray();
@@ -47,86 +55,17 @@ class Board {
 
 	private static String addWhitespace(String string, int rows) {
 		double whitespace = (rows - (string.length() % rows)) / 2.0; // whitespace on each end
-		
+
 		StringBuffer result = new StringBuffer();
 
 		for (int i = 0; i < (int) Math.floor(whitespace); i++)
 			result.append(" ");
-		
+
 		result.append(string);
-		
+
 		for (int i = 0; i < (int) Math.ceil(whitespace); i++)
 			result.append(" ");
-		
-		return result.toString();
-	}
-	
-	public String format() {
-		/** Display current playing board */
-		StringBuffer result = new StringBuffer("\n\n");
-		
-		result.append(this.formatClues());
-		result.append(this.formatHorizontalLine());
-		
-		result.append(this.formatBoxes());
-		
-		result.append(this.formatHorizontalLine());
-		result.append(this.formatColumnNumbers());
-		
-		return result.toString();
-	}
 
-	public String formatClues() {
-		StringBuffer result = new StringBuffer();
-		for (int i = 0; i < this.clues[0].length; i++) {
-			result.append("  ");
-			for (int j = 0; j < this.clues.length; j++) {
-				result.append(separator + separator);
-				if (this.clues[j][i] == space)
-					result.append(' ');
-				else
-					result.append(this.clues[j][i]);
-			}
-			result.append(separator);
-			result.append("\n");
-		}
-		return result.toString();
-	}
-
-	public String formatHorizontalLine() {
-		StringBuffer result = new StringBuffer("  ");
-		for (int i = 0; i < this.columns; i++)
-			result.append("---");
-		result.append("\n");
-		
-		return result.toString();
-	}
-
-	public String formatBoxes() {
-		StringBuffer result = new StringBuffer();
-		for (int r = 0; r < this.rows; r++) {
-			result.append((char) (r + 'A') + separator); // row letter
-			for (int c = 0; c < this.columns; c++) {
-				result.append(separator + separator + this.currentBoard[r][c]);
-			}
-			result.append(separator);
-			result.append("\n");
-			if (r != this.rows - 1)
-				result.append("\n"); // end of row
-		}
-		return result.toString();
-	}
-
-	public String formatColumnNumbers() {
-		StringBuffer result = new StringBuffer("  ");
-		for (int i = 0; i < this.columns; i++) {
-			result.append(separator);
-			if (i < 10)
-				result.append(' ');
-			result.append(i); // display column numbers under board
-		}
-		result.append(separator);
-		result.append("\n");
 		return result.toString();
 	}
 
@@ -135,7 +74,7 @@ class Board {
 		 * Submit a guess Returns whether or not guess was correct
 		 */
 
-		int rowNum = (int) Character.toUpperCase(row) - 'A'; // converts letter input into numbers starting with a = 0
+		int rowNum = Character.toUpperCase(row) - 'A'; // converts letter input into numbers starting with a = 0
 		if (this.currentBoard[rowNum][colNum] != space) // as long as it isn't a a black space
 			this.currentBoard[rowNum][colNum] = Character.toUpperCase(letter);
 		else
