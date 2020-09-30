@@ -1,4 +1,5 @@
 package puzzle;
+
 import java.util.Arrays;
 import java.util.Random;
 
@@ -20,7 +21,7 @@ class Array {
 
 	public static char[] joinArrays(char[] array1, char[] array2) {
 		// currently unused
-		
+
 		char[] newArray = new char[array1.length + array2.length];
 
 		System.arraycopy(array1, 0, newArray, 0, array1.length);
