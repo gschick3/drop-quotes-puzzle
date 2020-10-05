@@ -82,11 +82,11 @@ class Board {
 		return this.currentBoard[rowNum][colNum] == this.quoteArray[rowNum][colNum] ? true : false;
 	}
 
-	public boolean checkWin() {
-		/** Returns whether or not player has won */
-
+	public int[] countErrors() {
+		// separate into counting and fixing errors
 		int errors = 0;
 		int emptySpaces = 0;
+
 		for (int r = 0; r < this.rows; r++) {
 			for (int c = 0; c < this.columns; c++) {
 				if (this.currentBoard[r][c] != this.quoteArray[r][c]) {
@@ -95,14 +95,17 @@ class Board {
 						emptySpaces++;
 					} else {
 						// if one of the guesses is wrong
-						this.currentBoard[r][c] = emptySpace; // removes incorrect guess
+						erase(r, c); // removes incorrect guess
 						errors++;
 					}
 				}
 			}
 		}
-		System.out.println("You have " + errors + " error(s) and " + emptySpaces + " blank space(s).");
-		return errors == 0 && emptySpaces == 0;
+		int[] results = { errors, emptySpaces };
+		return results;
 	}
 
+	private void erase(int row, int column) {
+		this.currentBoard[row][column] = emptySpace;
+	}
 }

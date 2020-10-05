@@ -10,6 +10,7 @@ class Puzzle {
 
 		Board board = new Board(quote, rows);
 		BoardFormat boardFormatter = new BoardFormat(board);
+		Scoreboard scoreboard = new Scoreboard();
 
 		Scanner input = new Scanner(System.in);
 		while (!end) {
@@ -20,9 +21,13 @@ class Puzzle {
 			input.nextLine(); // just in case there is extra input
 			switch (guess) {
 			case "check":
-				if (board.checkWin()) {
+				int[] errors = board.countErrors();
+				scoreboard.update(errors[0], errors[1]);
+				if (scoreboard.checkWin()) {
 					System.out.println("You Win!");
 					end = true;
+				} else {
+					System.out.println("You have " + errors[0] + " error(s) and " + errors[1] + " blank space(s).");
 				}
 				break;
 			case "quit":
