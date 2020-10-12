@@ -1,5 +1,7 @@
 package puzzle;
 
+import java.util.*;
+
 class Board {
 	private static char emptySpace = '_';
 	public char space = '/';
@@ -12,9 +14,12 @@ class Board {
 	private char[][] clues;
 	private char[][] currentBoard;
 
+	private Scoreboard scoreboard;
+
 	public Board(String quote, int rows) {
 		this.quote = quote;
 		this.rows = rows;
+		scoreboard = new Scoreboard();
 		fillBoard();
 	}
 
@@ -75,34 +80,41 @@ class Board {
 		 */
 
 		int rowNum = Character.toUpperCase(row) - 'A'; // converts letter input into numbers starting with a = 0
-		if (this.currentBoard[rowNum][colNum] != space) // as long as it isn't a a black space
+		if (this.currentBoard[rowNum][colNum] != space) { // as long as it isn't a a black space
 			this.currentBoard[rowNum][colNum] = Character.toUpperCase(letter);
-		else
-			System.out.println("Invalid Choice"); // if they try changing a black space
-		return this.currentBoard[rowNum][colNum] == this.quoteArray[rowNum][colNum] ? true : false;
+			return true;
+		}
+		return false;
 	}
 
-	public int[] countErrors() {
-		// separate into counting and fixing errors
-		int errors = 0;
-		int emptySpaces = 0;
+	public List<Coord> findErrors() {
+		List<Coord> coords = new ArrayList<>();
+		for (int r = 0; r < this.rows; r++)
+			for (int c = 0; c < this.columns; c++)
+				if (this.currentBoard[r][c] != this.quoteArray[r][c] && this.currentBoard[r][c] != emptySpace)
+					coords.add(new Coord(r, c));
+		return coords;
+	}
 
-		for (int r = 0; r < this.rows; r++) {
-			for (int c = 0; c < this.columns; c++) {
-				if (this.currentBoard[r][c] != this.quoteArray[r][c]) {
-					if (this.currentBoard[r][c] == emptySpace) {
-						// if block has been left unanswered
-						emptySpaces++;
-					} else {
-						// if one of the guesses is wrong
-						erase(r, c); // removes incorrect guess
-						errors++;
-					}
-				}
-			}
-		}
-		int[] results = { errors, emptySpaces };
-		return results;
+	public boolean hasEmptySpaces() {
+		for (int r = 0; r < this.rows; r++)
+			for (int c = 0; c < this.columns; c++)
+				if (this.currentBoard[r][c] != this.quoteArray[r][c] && this.currentBoard[r][c] == emptySpace)
+					return true;
+		return false;
+	}
+
+	public Scoreboard score() {
+		// separate into counting and fixing errors
+		scoreboard.setErrors(findErrors());
+		scoreboard.setHasEmpties(hasEmptySpaces());
+		return scoreboard;
+	}
+
+	public void eraseErrors() {
+		for (Coord coord : scoreboard.getErrors())
+			if (currentBoard[coord.x][coord.y] != quoteArray[coord.x][coord.y])
+				erase(coord.x, coord.y);
 	}
 
 	private void erase(int row, int column) {

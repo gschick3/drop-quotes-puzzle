@@ -1,15 +1,28 @@
 package puzzle;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Scoreboard {
 	public int errors;
-	public int empties;
+	public boolean hasEmpties = true;
 
-	public void update(int errors, int empties) {
-		this.errors = errors;
-		this.empties = empties;
-	}
+	public List<Coord> coords = new ArrayList<>();
 
 	public boolean checkWin() {
-		return this.errors + this.empties == 0;
+		return this.errors == 0 && !hasEmpties;
+	}
+
+	public List<Coord> getErrors() {
+		return coords;
+	}
+
+	public void setErrors(List<Coord> coords) {
+		this.coords = coords;
+		errors = coords.size();
+	}
+
+	public void setHasEmpties(boolean hasEmpties) {
+		this.hasEmpties = hasEmpties;
 	}
 }
