@@ -1,6 +1,7 @@
 package puzzle;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
 
 class BoardTest {
@@ -36,6 +37,16 @@ class BoardTest {
 	void scoreboardKnowsErrorCoords() {
 		Board board = new Board("a", 1);
 		board.input('a', 0, 'd');
-		assertEquals(1, board.score().getErrors().size());
+		assertEquals(1, board.getScore().getErrors().size());
+	}
+
+	@Test
+	void stringWithNoWhitespace() {
+		assertEquals(0.0, Board.calculateWhitespace("test", 2));
+	}
+
+	@Test
+	void stringWithOneWhitespace() {
+		assertEquals(1.0, Math.ceil(Board.calculateWhitespace("testies", 3)));
 	}
 }
