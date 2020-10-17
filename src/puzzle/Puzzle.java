@@ -18,9 +18,10 @@ class Puzzle {
 			System.out.print("Guess (help/check/fix/quit): ");
 			String guess = input.next().toLowerCase();
 			input.nextLine(); // just in case there is extra input
+			var scoreboard = board.getScore();
+
 			switch (guess) {
 			case "check":
-				var scoreboard = board.score();
 				if (scoreboard.checkWin()) {
 					System.out.println("You Win!");
 					end = true;
@@ -35,7 +36,7 @@ class Puzzle {
 				end = true;
 				break;
 			default:
-				System.out.print("[Row] [Column]: ");
+				System.out.print("[Letter] [Number]: ");
 				char row = input.next().charAt(0);
 				int col = input.nextInt();
 				char letter = guess.charAt(0);
