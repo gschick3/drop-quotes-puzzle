@@ -15,6 +15,7 @@ class Board {
 	private char[][] currentBoard;
 
 	private Scoreboard scoreboard;
+	private List<Coord> coords = new ArrayList<>();
 
 	public Board(String quote, int rows) {
 		this.quote = quote;
@@ -33,14 +34,16 @@ class Board {
 
 		this.currentBoard = new char[this.rows][this.columns]; // create empty board for player
 
-		for (int r = 0; r < this.rows; r++) {
-			for (int c = 0; c < this.columns; c++) {
-				if (this.quoteArray[r][c] == ' ') {
-					this.quoteArray[r][c] = space;
-					this.currentBoard[r][c] = space;
-				} else {
-					this.currentBoard[r][c] = emptySpace;
-				}
+		for (int r = 0; r < this.rows; r++)
+			for (int c = 0; c < this.columns; c++)
+				this.coords.add(new Coord(r, c));
+
+		for (Coord coord : coords) {
+			if (this.quoteArray[coord.x][coord.y] == ' ') {
+				this.quoteArray[coord.x][coord.y] = space;
+				this.currentBoard[coord.x][coord.y] = space;
+			} else {
+				this.currentBoard[coord.x][coord.y] = emptySpace;
 			}
 		}
 	}
@@ -59,7 +62,7 @@ class Board {
 	}
 
 	private static String addWhitespace(String string, int rows) {
-		double whitespace = (rows - (string.length() % rows)) / 2.0; // whitespace on each end
+		double whitespace = calculateWhitespace(string, rows);
 
 		StringBuffer result = new StringBuffer();
 
@@ -72,6 +75,13 @@ class Board {
 			result.append(" ");
 
 		return result.toString();
+	}
+
+	public static double calculateWhitespace(String string, int rows) {
+		// public for testing
+		double whitespace = string.length() % rows == 0 ? 0 : (rows - (string.length() % rows)) / 2.0; // whitespace on
+																										// each end
+		return whitespace;
 	}
 
 	public boolean input(char row, int colNum, char letter) {
@@ -88,24 +98,26 @@ class Board {
 	}
 
 	public List<Coord> findErrors() {
-		List<Coord> coords = new ArrayList<>();
-		for (int r = 0; r < this.rows; r++)
-			for (int c = 0; c < this.columns; c++)
-				if (this.currentBoard[r][c] != this.quoteArray[r][c] && this.currentBoard[r][c] != emptySpace)
-					coords.add(new Coord(r, c));
-		return coords;
+		List<Coord> errorCoords = new ArrayList<>();
+
+		for (Coord coord : this.coords) {
+			if (this.currentBoard[coord.x][coord.y] != this.quoteArray[coord.x][coord.y]
+					&& this.currentBoard[coord.x][coord.y] != emptySpace)
+				errorCoords.add(coord);
+		}
+
+		return errorCoords;
 	}
 
 	public boolean hasEmptySpaces() {
-		for (int r = 0; r < this.rows; r++)
-			for (int c = 0; c < this.columns; c++)
-				if (this.currentBoard[r][c] != this.quoteArray[r][c] && this.currentBoard[r][c] == emptySpace)
-					return true;
+		for (Coord coord : this.coords)
+			if (this.currentBoard[coord.x][coord.y] != this.quoteArray[coord.x][coord.y]
+					&& this.currentBoard[coord.x][coord.y] == emptySpace)
+				return true;
 		return false;
 	}
 
-	public Scoreboard score() {
-		// separate into counting and fixing errors
+	public Scoreboard getScore() {
 		scoreboard.setErrors(findErrors());
 		scoreboard.setHasEmpties(hasEmptySpaces());
 		return scoreboard;
@@ -114,10 +126,10 @@ class Board {
 	public void eraseErrors() {
 		for (Coord coord : scoreboard.getErrors())
 			if (currentBoard[coord.x][coord.y] != quoteArray[coord.x][coord.y])
-				erase(coord.x, coord.y);
+				erase(coord);
 	}
 
-	private void erase(int row, int column) {
-		this.currentBoard[row][column] = emptySpace;
+	private void erase(Coord coord) {
+		this.currentBoard[coord.x][coord.y] = emptySpace;
 	}
 }
