@@ -77,7 +77,7 @@ class Board {
 		return result.toString();
 	}
 
-	public static double calculateWhitespace(String string, int rows) {
+	private static double calculateWhitespace(String string, int rows) {
 		// public for testing
 		double whitespace = string.length() % rows == 0 ? 0 : (rows - (string.length() % rows)) / 2.0; // whitespace on
 																										// each end

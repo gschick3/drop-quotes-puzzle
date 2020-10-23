@@ -42,11 +42,13 @@ class BoardTest {
 
 	@Test
 	void stringWithNoWhitespace() {
-		assertEquals(0.0, Board.calculateWhitespace("test", 2));
+		Board board = new Board("test", 2);
+		assertEquals(2, board.getCurrentBoard()[0].length);
 	}
 
 	@Test
 	void stringWithOneWhitespace() {
-		assertEquals(1.0, Math.ceil(Board.calculateWhitespace("testies", 3)));
+		Board board = new Board("testing", 3);
+		assertEquals(3, board.getCurrentBoard()[0].length);
 	}
 }

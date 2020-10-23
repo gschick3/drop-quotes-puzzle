@@ -5,8 +5,8 @@ import java.util.Scanner;
 class Puzzle {
 	public static void main(String[] args) {
 		boolean end = false;
-		String quote = "abcde";
-		int rows = 2;
+		String quote = "testing";
+		int rows = 3;
 
 		Board board = new Board(quote, rows);
 		BoardFormat boardFormatter = new BoardFormat(board);
