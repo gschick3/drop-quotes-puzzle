@@ -1,6 +1,7 @@
 package puzzle;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 class Board {
 	private static char emptySpace = '_';
@@ -92,22 +93,21 @@ class Board {
 	}
 	
 	public void eraseErrors() {
-		for (Coord coord : scoreboard.getErrors())
-			if (this.currentBoard[coord.x][coord.y] != quoteArray[coord.x][coord.y])
-				this.currentBoard[coord.x][coord.y] = emptySpace;
+		scoreboard.getErrors()
+		.stream()
+		.filter(coord -> this.currentBoard[coord.x][coord.y] != quoteArray[coord.x][coord.y])
+		.forEach(coord -> this.currentBoard[coord.x][coord.y] = emptySpace);
+		
 		scoreboard.setErrors(new ArrayList<Coord>());
 		scoreboard.setHasEmpties(hasEmptySpaces());
 	}
 	
 	public List<Coord> findErrors() {
-		List<Coord> errorCoords = new ArrayList<>();
-
-		for (Coord coord : this.allCoords) {
-			if (this.currentBoard[coord.x][coord.y] != this.quoteArray[coord.x][coord.y]
-					&& this.currentBoard[coord.x][coord.y] != emptySpace)
-				errorCoords.add(coord);
-		}
-		return errorCoords;
+		return allCoords
+				.stream()
+				.filter(coord -> currentBoard[coord.x][coord.y] != quoteArray[coord.x][coord.y]
+					&& currentBoard[coord.x][coord.y] != emptySpace)
+				.collect(Collectors.toList());
 	}
 
 	public boolean hasEmptySpaces() {
