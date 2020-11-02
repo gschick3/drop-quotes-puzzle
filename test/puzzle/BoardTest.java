@@ -21,22 +21,22 @@ class BoardTest {
 	@Test
 	void boardWithOneErrors() {
 		Board board = new Board("abcde", 2);
-		board.input('a', 0, 'd');
+		board.setGuess('a', 0, 'd');
 		assertEquals(1, board.findErrors().size());
 	}
 
 	@Test
 	void boardWithMultipleErrors() {
 		Board board = new Board("a b", 1);
-		board.input('a', 0, 'd');
-		board.input('a', 2, 'd');
+		board.setGuess('a', 0, 'd');
+		board.setGuess('a', 2, 'd');
 		assertEquals(2, board.findErrors().size());
 	}
 
 	@Test
 	void scoreboardKnowsErrorCoords() {
 		Board board = new Board("a", 1);
-		board.input('a', 0, 'd');
+		board.setGuess('a', 0, 'd');
 		assertEquals(1, board.getScore().getErrors().size());
 	}
 

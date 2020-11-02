@@ -22,11 +22,11 @@ class Puzzle {
 
 			switch (guess) {
 			case "check":
-				if (scoreboard.checkWin()) {
+				if (scoreboard.hasWon()) {
 					System.out.println("You Win!");
 					end = true;
 				} else {
-					System.out.println("You have " + scoreboard.errors + " error(s)");
+					System.out.println("You have " + scoreboard.getErrors().size() + " error(s)");
 				}
 				break;
 			case "fix":
@@ -40,7 +40,7 @@ class Puzzle {
 				char row = input.next().charAt(0);
 				int col = input.nextInt();
 				char letter = guess.charAt(0);
-				if (!board.input(row, col, letter))
+				if (!board.setGuess(row, col, letter))
 					System.out.println("Invalid Choice");
 				break;
 			}
