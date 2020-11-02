@@ -47,11 +47,12 @@ class Board {
 			}
 		}
 	}
+
 	private char[] normalizeString(String string) {
 		string = addWhitespace(string.toUpperCase(), this.rows);
 		return string.toCharArray();
 	}
-	
+
 	private static String addWhitespace(String string, int rows) {
 		double whitespace = whitespaceOnEachEnd(string, rows);
 
@@ -67,12 +68,12 @@ class Board {
 
 		return result.toString();
 	}
-	
+
 	private static double whitespaceOnEachEnd(String string, int rows) {
 		int overhang = string.length() % rows;
 		return overhang == 0 ? 0 : (rows - overhang) / 2.0;
-	}	
-	
+	}
+
 	public char[][] getCurrentBoard() {
 		return currentBoard;
 	}
@@ -91,29 +92,36 @@ class Board {
 		}
 		return false;
 	}
-	
+
 	public void eraseErrors() {
 		scoreboard.getErrors()
 		.stream()
-		.filter(coord -> this.currentBoard[coord.x][coord.y] != quoteArray[coord.x][coord.y])
-		.forEach(coord -> this.currentBoard[coord.x][coord.y] = emptySpace);
-		
+		.filter(coord -> mismatchesAt(coord))	
+		.forEach(coord -> currentBoard[coord.x][coord.y] = emptySpace);
+
 		scoreboard.setErrors(new ArrayList<Coord>());
 		scoreboard.setHasEmpties(hasEmptySpaces());
 	}
-	
+
 	public List<Coord> findErrors() {
 		return allCoords
 				.stream()
-				.filter(coord -> currentBoard[coord.x][coord.y] != quoteArray[coord.x][coord.y]
-					&& currentBoard[coord.x][coord.y] != emptySpace)
+				.filter(coord -> mismatchesAt(coord) && !isEmptyAt(coord))
 				.collect(Collectors.toList());
 	}
 
 	public boolean hasEmptySpaces() {
 		return allCoords
 				.stream()
-				.anyMatch(c -> currentBoard[c.x][c.y] == emptySpace);
+				.anyMatch(coord -> isEmptyAt(coord));
+	}
+
+	private boolean mismatchesAt(Coord coord) {
+		return currentBoard[coord.x][coord.y] != quoteArray[coord.x][coord.y];
+	}
+
+	private boolean isEmptyAt(Coord coord) {
+		return currentBoard[coord.x][coord.y] == emptySpace;
 	}
 
 	public Scoreboard getScore() {
