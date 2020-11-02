@@ -62,7 +62,7 @@ class Board {
 	}
 
 	private static String addWhitespace(String string, int rows) {
-		double whitespace = calculateWhitespace(string, rows);
+		double whitespace = whitespaceOnEachEnd(string, rows);
 
 		StringBuffer result = new StringBuffer();
 
@@ -77,11 +77,9 @@ class Board {
 		return result.toString();
 	}
 
-	private static double calculateWhitespace(String string, int rows) {
-		// public for testing
-		double whitespace = string.length() % rows == 0 ? 0 : (rows - (string.length() % rows)) / 2.0; // whitespace on
-																										// each end
-		return whitespace;
+	private static double whitespaceOnEachEnd(String string, int rows) {
+		int overhang = string.length() % rows;
+		return overhang == 0 ? 0 : (rows - overhang) / 2.0;
 	}
 
 	public boolean input(char row, int colNum, char letter) {
