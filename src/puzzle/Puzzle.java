@@ -12,16 +12,42 @@ class Puzzle {
 		BoardFormat boardFormatter = new BoardFormat(board);
 
 		Scanner input = new Scanner(System.in);
+		char rowInput;
+		int colInput;
+		
 		while (!end) {
 			boardFormatter.updateBoard(board);
 			System.out.print(boardFormatter.format());
-			System.out.print("Guess (help/check/fix/quit): ");
-			String guess = input.next().toLowerCase();
+			System.out.println("Type ? for a list of commands");
+			System.out.print("> ");
+			String inputData = input.next().toLowerCase();
 			input.nextLine(); // just in case there is extra input
 			var scoreboard = board.getScore();
-
-			switch (guess) {
-			case "check":
+			
+			switch (inputData.charAt(0)) {
+			case '?':
+				System.out.println();
+				System.out.println("?\tHelp Menu");
+				System.out.println("+[r][c]\tMake Guess");
+				System.out.println("*[r][c]\tGet a Hint");
+				System.out.println(".\tCount Errors");
+				System.out.println("x\tErase All Errors");
+				System.out.println("!\tQuit");
+				break;
+			case '+':
+				rowInput = inputData.charAt(1);
+				colInput = Integer.parseInt(inputData.substring(2, inputData.length()));
+				System.out.print("Enter guess: ");
+				char letter = input.next().charAt(0);
+				if (!board.setGuess(rowInput, colInput, letter))
+					System.out.println("Invalid Choice");
+				break;
+			case '*':
+				rowInput = inputData.charAt(1);
+				colInput = Integer.parseInt(inputData.substring(2, inputData.length()));
+				System.out.println("Not yet implemented.");
+				break;
+			case '.':
 				if (scoreboard.hasWon()) {
 					System.out.println("You Win!");
 					end = true;
@@ -29,19 +55,14 @@ class Puzzle {
 					System.out.println("You have " + scoreboard.getErrors().size() + " error(s)");
 				}
 				break;
-			case "fix":
+			case 'x':
 				board.eraseErrors();
 				break;
-			case "quit":
+			case '!':
 				end = true;
 				break;
 			default:
-				System.out.print("[Letter] [Number]: ");
-				char row = input.next().charAt(0);
-				int col = input.nextInt();
-				char letter = guess.charAt(0);
-				if (!board.setGuess(row, col, letter))
-					System.out.println("Invalid Choice");
+				System.out.println("Invalid input");
 				break;
 			}
 		}
