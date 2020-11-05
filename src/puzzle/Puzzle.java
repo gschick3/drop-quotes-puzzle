@@ -14,7 +14,7 @@ class Puzzle {
 		Scanner input = new Scanner(System.in);
 		char rowInput;
 		int colInput;
-		
+
 		while (!end) {
 			boardFormatter.updateBoard(board);
 			System.out.print(boardFormatter.format());
@@ -23,16 +23,16 @@ class Puzzle {
 			String inputData = input.next().toLowerCase();
 			input.nextLine(); // just in case there is extra input
 			var scoreboard = board.getScore();
-			
+
 			switch (inputData.charAt(0)) {
 			case '?':
-				System.out.println();
-				System.out.println("?\tHelp Menu");
-				System.out.println("+[r][c]\tMake Guess");
-				System.out.println("*[r][c]\tGet a Hint");
-				System.out.println(".\tCount Errors");
-				System.out.println("x\tErase All Errors");
-				System.out.println("!\tQuit");
+				System.out.println("\n" 
+						+ "?\tHelp Menu\n" 
+						+ "+[r][c]\tMake Guess\n" 
+						+ "*[r][c]\tGet a Hint\n"
+						+ ".\tCount Errors\n" 
+						+ "x\tErase All Errors\n" 
+						+ "!\tQuit");
 				break;
 			case '+':
 				rowInput = inputData.charAt(1);
