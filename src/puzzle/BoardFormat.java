@@ -40,7 +40,7 @@ public class BoardFormat {
 		return result.toString();
 	}
 
-	public String formatClues() {
+	private String formatClues() {
 		StringBuffer result = new StringBuffer();
 		for (int i = 0; i < clues[0].length; i++) {
 			result.append("  ");
@@ -57,7 +57,7 @@ public class BoardFormat {
 		return result.toString();
 	}
 
-	public String formatHorizontalLine() {
+	private String formatHorizontalLine() {
 		StringBuffer result = new StringBuffer("  ");
 		for (int i = 0; i < columns; i++)
 			result.append("---");
@@ -66,7 +66,7 @@ public class BoardFormat {
 		return result.toString();
 	}
 
-	public String formatBoxes() {
+	private String formatBoxes() {
 		StringBuffer result = new StringBuffer();
 
 		for (int r = 0; r < rows; r++) {
@@ -82,7 +82,7 @@ public class BoardFormat {
 		return result.toString();
 	}
 
-	public String formatColumnNumbers() {
+	private String formatColumnNumbers() {
 		StringBuffer result = new StringBuffer("  ");
 		for (int i = 0; i < columns; i++) {
 			result.append(separator);

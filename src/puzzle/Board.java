@@ -24,7 +24,7 @@ class Board {
 		fillBoard();
 	}
 
-	public void fillBoard() {
+	private void fillBoard() {
 		char[] normalizedQuote = this.normalizeString(this.quote);
 		this.quoteArray = Array.dimensionalize(normalizedQuote, this.rows); // fill complete 2d array with uppercase
 																			// letters
@@ -103,14 +103,14 @@ class Board {
 		scoreboard.setHasEmpties(hasEmptySpaces());
 	}
 
-	public List<Coord> findErrors() {
+	private List<Coord> findErrors() {
 		return allCoords
 				.stream()
 				.filter(coord -> mismatchesAt(coord) && !isEmptyAt(coord))
 				.collect(Collectors.toList());
 	}
 
-	public boolean hasEmptySpaces() {
+	private boolean hasEmptySpaces() {
 		return allCoords
 				.stream()
 				.anyMatch(coord -> isEmptyAt(coord));

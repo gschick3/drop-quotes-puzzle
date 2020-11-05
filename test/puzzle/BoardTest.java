@@ -9,20 +9,21 @@ class BoardTest {
 	@Test
 	void boardStartsWithNoErrors() {
 		Board board = new Board("abcde", 2);
-		assertEquals(0, board.findErrors().size());
+		assertEquals(0, board.getScore().getErrors().size());
+		
 	}
 
 	@Test
 	void boardWithSpacesAndNoErrors() {
 		Board board = new Board("a b", 1);
-		assertEquals(0, board.findErrors().size());
+		assertEquals(0, board.getScore().getErrors().size());
 	}
 
 	@Test
 	void boardWithOneErrors() {
 		Board board = new Board("abcde", 2);
 		board.setGuess('a', 0, 'd');
-		assertEquals(1, board.findErrors().size());
+		assertEquals(1, board.getScore().getErrors().size());
 	}
 
 	@Test
@@ -30,7 +31,7 @@ class BoardTest {
 		Board board = new Board("a b", 1);
 		board.setGuess('a', 0, 'd');
 		board.setGuess('a', 2, 'd');
-		assertEquals(2, board.findErrors().size());
+		assertEquals(2, board.getScore().getErrors().size());
 	}
 
 	@Test
