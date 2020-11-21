@@ -2,6 +2,8 @@ package puzzle;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Arrays;
+
 import org.junit.jupiter.api.Test;
 
 class BoardTest {
@@ -51,5 +53,12 @@ class BoardTest {
 	void stringWithOneWhitespace() {
 		Board board = new Board("testing", 3);
 		assertEquals(3, board.getCurrentBoard()[0].length);
+	}
+	
+	@Test
+	void boardFindsCluesForOneLine() {
+		Board board = new Board("image", 1);
+		var actual = board.findHints('A', 0, Arrays.asList("I", "M", "A", "G", "E"));
+		assertEquals(Arrays.asList("IMAGE"), actual);
 	}
 }

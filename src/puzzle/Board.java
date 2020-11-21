@@ -83,7 +83,7 @@ class Board {
 	}
 
 	public boolean setGuess(char row, int colNum, char letter) {
-		int rowNum = Character.toUpperCase(row) - 'A'; // converts letter input into numbers starting with a = 0
+		int rowNum = charToNum(row); // converts letter input into numbers starting with a = 0
 		if (this.currentBoard[rowNum][colNum] != space) { // as long as it isn't a a black space
 			this.currentBoard[rowNum][colNum] = Character.toUpperCase(letter);
 			scoreboard.setErrors(findErrors());
@@ -91,6 +91,29 @@ class Board {
 			return true;
 		}
 		return false;
+	}
+	
+	private int charToNum(char c) {
+		return Character.toUpperCase(c) - 'A';
+	}
+	
+	public List<String> findHints(char row, int colNum, List<String> dictionary) {
+		Hints hintFinder = new Hints(dictionary);
+		List<String> clueList = new ArrayList<>();
+		for (int col: findWordRange(row, colNum)) {
+			clueList.add(String.valueOf(clues[col]));
+		}
+		return hintFinder.find(clueList);
+	}
+	
+	private List<Integer> findWordRange(char row, int colNum) {
+		// This is not working
+		int rowNum = charToNum(row);
+		List<Integer> colNums = new ArrayList<>();
+		for (int column = 0; column < currentBoard[0].length; column++) {
+			colNums.add(column);
+		}
+		return colNums;
 	}
 
 	public void eraseErrors() {
