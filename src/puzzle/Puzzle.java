@@ -1,9 +1,12 @@
 package puzzle;
 
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 class Puzzle {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		boolean end = false;
 		String quote = "testing";
 		int rows = 3;
@@ -14,6 +17,8 @@ class Puzzle {
 		Scanner input = new Scanner(System.in);
 		char rowInput;
 		int colInput;
+		
+		List<String> dictionary = listFromFile("././_words.txt");
 
 		while (!end) {
 			boardFormatter.updateBoard(board);
@@ -45,7 +50,13 @@ class Puzzle {
 			case '*':
 				rowInput = inputData.charAt(1);
 				colInput = Integer.parseInt(inputData.substring(2, inputData.length()));
-				System.out.println("Not yet implemented.");
+				List<String> hints = board.findHints(rowInput, colInput, dictionary);
+				if(hints.size() > 0) {
+					System.out.println("Hints:");
+					for(String hint: hints)
+						System.out.println(hint);
+				} else
+					System.out.println("No matches found.");
 				break;
 			case '.':
 				if (scoreboard.hasWon()) {
@@ -67,5 +78,19 @@ class Puzzle {
 			}
 		}
 		input.close();
+	}
+	
+	public static List<String> listFromFile(String fileName) throws IOException {
+		List<String> list = new ArrayList<>();
+		
+		File file = new File(fileName);
+		BufferedReader reader = new BufferedReader(new FileReader(file));
+		
+		String line;
+		while((line = reader.readLine()) != null) {
+			list.add(line.toUpperCase());
+		}
+		reader.close();
+		return list;
 	}
 }

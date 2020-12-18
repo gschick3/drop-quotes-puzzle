@@ -107,11 +107,16 @@ class Board {
 	}
 	
 	private List<Integer> findWordRange(char row, int colNum) {
-		// This is not working
 		int rowNum = charToNum(row);
+		int colStart = colNum;
 		List<Integer> colNums = new ArrayList<>();
-		for (int column = 0; column < currentBoard[0].length; column++) {
-			colNums.add(column);
+		for (int r = rowNum; r < currentBoard.length; r++) {
+			for (int c = colStart; c < currentBoard[0].length; c++) {
+				if (currentBoard[r][c] == space)
+					return colNums;
+				colNums.add(c);
+			}
+			colStart = 0;
 		}
 		return colNums;
 	}
