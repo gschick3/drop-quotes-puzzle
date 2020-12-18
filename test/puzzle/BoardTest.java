@@ -12,7 +12,7 @@ class BoardTest {
 	void boardStartsWithNoErrors() {
 		Board board = new Board("abcde", 2);
 		assertEquals(0, board.getScore().getErrors().size());
-		
+
 	}
 
 	@Test
@@ -54,11 +54,39 @@ class BoardTest {
 		Board board = new Board("testing", 3);
 		assertEquals(3, board.getCurrentBoard()[0].length);
 	}
-	
+
 	@Test
 	void boardFindsCluesForOneLine() {
 		Board board = new Board("image", 1);
-		var actual = board.findHints('A', 0, Arrays.asList("I", "M", "A", "G", "E"));
+		var actual = board.findHints('A', 0, Arrays.asList("IMAGE", "BOOK"));
 		assertEquals(Arrays.asList("IMAGE"), actual);
+	}
+
+	@Test
+	void boardFindsCluesForTwoLines() {
+		Board board = new Board("image", 2);
+		var actual = board.findHints('A', 0, Arrays.asList("BOOK", "IMAGE"));
+		assertEquals(Arrays.asList("IMAGE"), actual);
+	}
+
+	@Test
+	void boardFindsCluesForFirstWord() {
+		Board board = new Board("book image", 2);
+		var actual = board.findHints('A', 0, Arrays.asList("IMAGE", "BOOK"));
+		assertEquals(Arrays.asList("BOOK"), actual);
+	}
+
+	@Test
+	void boardFindsCluesForSecondWord() {
+		Board board = new Board("image book", 2);
+		var actual = board.findHints('B', 1, Arrays.asList("IMAGE", "BOOK"));
+		assertEquals(Arrays.asList("BOOK"), actual);
+	}
+	
+	@Test
+	void boardFindsCluesForMultiplePossibilities() {
+		Board board = new Board("save", 2);
+		var actual = board.findHints('A', 0, Arrays.asList("VASE", "AGES", "SAVE"));
+		assertEquals(Arrays.asList("SAVE", "VASE"), actual);
 	}
 }
