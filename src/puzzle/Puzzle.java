@@ -20,7 +20,7 @@ class Puzzle {
 		char rowInput;
 		int colInput;
 		
-		List<String> dictionary = listFromFile("_words.txt");
+		Hints dictionary = listFromFile("_words.txt");
 
 		while (!end) {
 			boardFormatter.updateBoard(board);
@@ -82,11 +82,12 @@ class Puzzle {
 		input.close();
 	}
 	
-	public static List<String> listFromFile(String fileName) throws IOException {
-		return Files
+	public static Hints listFromFile(String fileName) throws IOException {
+		return new Hints(Files
 				.readAllLines(Paths.get(fileName))
 				.stream()
 				.map(String::toUpperCase)
-				.collect(Collectors.toList());
+				.collect(Collectors.toList())
+				);
 	}
 }

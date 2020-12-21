@@ -97,8 +97,7 @@ class Board {
 		return Character.toUpperCase(c) - 'A';
 	}
 	
-	public List<String> findHints(char row, int colNum, List<String> dictionary) {
-		Hints hintFinder = new Hints(dictionary);
+	public List<String> findHints(char row, int colNum, Hints hintFinder) {
 		List<String> clueList = new ArrayList<>();
 		for (int col: findWordRange(row, colNum)) {
 			clueList.add(String.valueOf(clues[col]));
