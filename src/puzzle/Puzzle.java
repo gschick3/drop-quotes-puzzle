@@ -1,9 +1,11 @@
 package puzzle;
 
-import java.io.*;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 class Puzzle {
 	public static void main(String[] args) throws IOException {
@@ -18,7 +20,7 @@ class Puzzle {
 		char rowInput;
 		int colInput;
 		
-		List<String> dictionary = listFromFile("././_words.txt");
+		List<String> dictionary = listFromFile("_words.txt");
 
 		while (!end) {
 			boardFormatter.updateBoard(board);
@@ -81,16 +83,10 @@ class Puzzle {
 	}
 	
 	public static List<String> listFromFile(String fileName) throws IOException {
-		List<String> list = new ArrayList<>();
-		
-		File file = new File(fileName);
-		BufferedReader reader = new BufferedReader(new FileReader(file));
-		
-		String line;
-		while((line = reader.readLine()) != null) {
-			list.add(line.toUpperCase());
-		}
-		reader.close();
-		return list;
+		return Files
+				.readAllLines(Paths.get(fileName))
+				.stream()
+				.map(String::toUpperCase)
+				.collect(Collectors.toList());
 	}
 }
