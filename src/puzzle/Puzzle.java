@@ -33,7 +33,7 @@ class Puzzle {
 			case '?':
 				System.out.println("\n" 
 						+ "?\tHelp Menu\n" 
-						+ "+[r][c]\tMake Guess\n" 
+						+ "+[r][c]\tPlace a Letter\n" 
 						+ "*[r][c]\tGet a Hint\n"
 						+ ".\tCheck Solution\n" 
 						+ "x\tErase All Errors\n" 
@@ -42,7 +42,7 @@ class Puzzle {
 			case '+':
 				rowInput = inputData.charAt(1);
 				colInput = Integer.parseInt(inputData.substring(2, inputData.length()));
-				System.out.print("Enter guess: ");
+				System.out.print("Enter letter: ");
 				char letter = input.next().charAt(0);
 				if (!board.setGuess(rowInput, colInput, letter))
 					System.out.println("Invalid Choice");
@@ -83,7 +83,6 @@ class Puzzle {
 	static String loadPuzzle() throws IOException {
 		Random r = new Random();
 		String fileName = "src/quotes/quote" + r.nextInt(4) + ".txt";
-		System.out.println(fileName);
 		return Files
 				.readString(Paths.get(fileName))
 				.toUpperCase();
