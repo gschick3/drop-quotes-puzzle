@@ -17,6 +17,12 @@ class Board {
 	private Scoreboard scoreboard;
 	private List<Coord> allCoords = new ArrayList<>();
 
+	public Board(String quote) {
+		this.quote = quote;
+		this.rows = (int)Math.ceil(quote.length() / 15.0); // just somewhere around 15 spaces long
+		scoreboard = new Scoreboard();
+		fillBoard();
+	}
 	public Board(String quote, int rows) {
 		this.quote = quote;
 		this.rows = rows;
@@ -49,6 +55,7 @@ class Board {
 	}
 
 	private char[] normalizeString(String string) {
+		string = string.replaceAll("[.]", " ").replaceAll("[,\']", "");
 		string = addWhitespace(string.toUpperCase(), this.rows);
 		return string.toCharArray();
 	}

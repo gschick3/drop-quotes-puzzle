@@ -10,10 +10,8 @@ import java.util.Random;
 class Puzzle {
 	public static void main(String[] args) throws IOException {
 		boolean end = false;
-		String quote = loadPuzzle();
-		int rows = 3;
 
-		Board board = new Board(quote, rows);
+		Board board = new Board(loadPuzzle());
 		BoardFormat boardFormatter = new BoardFormat(board);
 
 		Scanner input = new Scanner(System.in);
