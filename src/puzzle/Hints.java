@@ -1,14 +1,26 @@
 package puzzle;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Hints {
 	private List<String> dictionary = new ArrayList<>();
 	
 	public Hints(List<String> dictionary) {
 		this.dictionary = dictionary;
+	}
+	public Hints(String fileName) throws IOException {
+		this.dictionary = (Files
+				.readAllLines(Paths.get(fileName))
+				.stream()
+				.map(String::toUpperCase)
+				.collect(Collectors.toList())
+				);
 	}
 	
 	public List<String> find(List<String> clues) {
@@ -27,5 +39,4 @@ public class Hints {
 		Collections.sort(result);
 		return result;
 	}
-
 }

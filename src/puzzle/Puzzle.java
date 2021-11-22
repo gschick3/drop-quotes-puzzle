@@ -1,11 +1,8 @@
 package puzzle;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 class Puzzle {
 	public static void main(String[] args) throws IOException {
@@ -20,7 +17,7 @@ class Puzzle {
 		char rowInput;
 		int colInput;
 		
-		Hints dictionary = listFromFile("_words.txt");
+		Hints dictionary = new Hints("_words.txt");
 
 		while (!end) {
 			boardFormatter.updateBoard(board);
@@ -37,7 +34,7 @@ class Puzzle {
 						+ "?\tHelp Menu\n" 
 						+ "+[r][c]\tMake Guess\n" 
 						+ "*[r][c]\tGet a Hint\n"
-						+ ".\tCount Errors\n" 
+						+ ".\tCheck Solution\n" 
 						+ "x\tErase All Errors\n" 
 						+ "!\tQuit");
 				break;
@@ -80,14 +77,5 @@ class Puzzle {
 			}
 		}
 		input.close();
-	}
-	
-	public static Hints listFromFile(String fileName) throws IOException {
-		return new Hints(Files
-				.readAllLines(Paths.get(fileName))
-				.stream()
-				.map(String::toUpperCase)
-				.collect(Collectors.toList())
-				);
 	}
 }
