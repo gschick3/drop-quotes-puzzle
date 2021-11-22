@@ -1,13 +1,18 @@
 package puzzle;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Random;
 
 class Puzzle {
 	public static void main(String[] args) throws IOException {
 		boolean end = false;
-		String quote = "testing";
+		String quote = loadPuzzle();
 		int rows = 3;
 
 		Board board = new Board(quote, rows);
@@ -77,5 +82,14 @@ class Puzzle {
 			}
 		}
 		input.close();
+	}
+	
+	static String loadPuzzle() throws IOException {
+		Random r = new Random();
+		String fileName = "src/quotes/quote" + r.nextInt(4) + ".txt";
+		System.out.println(fileName);
+		return Files
+				.readString(Paths.get(fileName))
+				.toUpperCase();
 	}
 }
