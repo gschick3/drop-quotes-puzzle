@@ -3,8 +3,6 @@ package puzzle;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Random;
