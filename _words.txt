@@ -6472,6 +6472,8 @@ dirt
 dirty
 Dis
 disambiguate
+disappoint
+disappointed
 disastrous
 disburse
 disc
@@ -23879,6 +23881,7 @@ yeah
 year
 yearbook
 yearn
+years
 yeast
 yeasty
 Yeats
