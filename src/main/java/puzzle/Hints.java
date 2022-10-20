@@ -8,8 +8,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Hints {
-	private List<String> dictionary = new ArrayList<>();
+class Hints {
+	private final List<String> dictionary;
 	
 	public Hints(List<String> dictionary) {
 		this.dictionary = dictionary;
@@ -30,8 +30,10 @@ public class Hints {
 				continue;
 			boolean matches = true;
 			for (int letterIndex = 0; letterIndex < word.length(); letterIndex++)
-				if (!clues.get(letterIndex).contains(word.substring(letterIndex, letterIndex+1)))
+				if (!clues.get(letterIndex).contains(word.substring(letterIndex, letterIndex + 1))) {
 					matches = false;
+					break;
+				}
 					
 			if (matches)
 				result.add(word);

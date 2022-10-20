@@ -4,18 +4,18 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 class Board {
-	private static char emptySpace = '_';
-	public char space = '/';
+	private static final char emptySpace = '_';
+	public final char space = '/';
 
-	private String quote;
-	private int rows;
+	private final String quote;
+	private final int rows;
 
 	private char[][] quoteArray;
 	private char[][] currentBoard;
 	private char[][] clues;
 
-	private Scoreboard scoreboard;
-	private List<Coord> allCoords = new ArrayList<>();
+	private final Scoreboard scoreboard;
+	private final List<Coord> allCoords = new ArrayList<>();
 
 	public Board(String quote) {
 		this.quote = quote;
@@ -45,17 +45,17 @@ class Board {
 				this.allCoords.add(new Coord(r, c));
 
 		for (Coord coord : allCoords) {
-			if (this.quoteArray[coord.x][coord.y] == ' ') {
-				this.quoteArray[coord.x][coord.y] = space;
-				this.currentBoard[coord.x][coord.y] = space;
+			if (this.quoteArray[coord.x()][coord.y()] == ' ') {
+				this.quoteArray[coord.x()][coord.y()] = space;
+				this.currentBoard[coord.x()][coord.y()] = space;
 			} else {
-				this.currentBoard[coord.x][coord.y] = emptySpace;
+				this.currentBoard[coord.x()][coord.y()] = emptySpace;
 			}
 		}
 	}
 
 	private char[] normalizeString(String string) {
-		string = string.replaceAll("[.]", " ").replaceAll("[,\']", "");
+		string = string.replaceAll("[.]", " ").replaceAll("[,']", "");
 		string = addWhitespace(string.toUpperCase(), this.rows);
 		return string.toCharArray();
 	}
@@ -63,17 +63,9 @@ class Board {
 	private static String addWhitespace(String string, int rows) {
 		double whitespace = whitespaceOnEachEnd(string, rows);
 
-		StringBuffer result = new StringBuffer();
-
-		for (int i = 0; i < (int) Math.floor(whitespace); i++)
-			result.append(" ");
-
-		result.append(string);
-
-		for (int i = 0; i < (int) Math.ceil(whitespace); i++)
-			result.append(" ");
-
-		return result.toString();
+		return " ".repeat(Math.max(0, (int) Math.floor(whitespace))) +
+				string +
+				" ".repeat(Math.max(0, (int) Math.ceil(whitespace)));
 	}
 
 	private static double whitespaceOnEachEnd(String string, int rows) {
@@ -91,7 +83,7 @@ class Board {
 
 	public boolean setGuess(char row, int colNum, char letter) {
 		int rowNum = charToNum(row); // converts letter input into numbers starting with a = 0
-		if (this.currentBoard[rowNum][colNum] != space) { // as long as it isn't a a black space
+		if (this.currentBoard[rowNum][colNum] != space) { // as long as it isn't a black space
 			this.currentBoard[rowNum][colNum] = Character.toUpperCase(letter);
 			scoreboard.setErrors(findErrors());
 			scoreboard.setHasEmpties(hasEmptySpaces());
@@ -130,10 +122,10 @@ class Board {
 	public void eraseErrors() {
 		scoreboard.getErrors()
 		.stream()
-		.filter(coord -> mismatchesAt(coord))	
-		.forEach(coord -> currentBoard[coord.x][coord.y] = emptySpace);
+		.filter(this::mismatchesAt)
+		.forEach(coord -> currentBoard[coord.x()][coord.y()] = emptySpace);
 
-		scoreboard.setErrors(new ArrayList<Coord>());
+		scoreboard.setErrors(new ArrayList<>());
 		scoreboard.setHasEmpties(hasEmptySpaces());
 	}
 
@@ -147,15 +139,15 @@ class Board {
 	private boolean hasEmptySpaces() {
 		return allCoords
 				.stream()
-				.anyMatch(coord -> isEmptyAt(coord));
+				.anyMatch(this::isEmptyAt);
 	}
 
 	private boolean mismatchesAt(Coord coord) {
-		return currentBoard[coord.x][coord.y] != quoteArray[coord.x][coord.y];
+		return currentBoard[coord.x()][coord.y()] != quoteArray[coord.x()][coord.y()];
 	}
 
 	private boolean isEmptyAt(Coord coord) {
-		return currentBoard[coord.x][coord.y] == emptySpace;
+		return currentBoard[coord.x()][coord.y()] == emptySpace;
 	}
 
 	public Scoreboard getScore() {

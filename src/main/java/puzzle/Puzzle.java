@@ -18,7 +18,7 @@ class Puzzle {
 		char rowInput;
 		int colInput;
 		
-		Hints dictionary = new Hints("_words.txt");
+		Hints dictionary = new Hints("src/resources/_words.txt");
 
 		while (!end) {
 			boardFormatter.updateBoard(board);
@@ -31,17 +31,18 @@ class Puzzle {
 
 			switch (inputData.charAt(0)) {
 			case '?':
-				System.out.println("\n" 
-						+ "?\tHelp Menu\n" 
-						+ "+[r][c]\tPlace a Letter\n" 
-						+ "*[r][c]\tGet a Hint\n"
-						+ ".\tCheck Solution\n" 
-						+ "x\tErase All Errors\n" 
-						+ "!\tQuit");
+				System.out.println("""
+
+						?\tHelp Menu
+						+[r][c]\tPlace a Letter
+						*[r][c]\tGet a Hint
+						.\tCheck Solution
+						x\tErase All Errors
+						!\tQuit""");
 				break;
 			case '+':
 				rowInput = inputData.charAt(1);
-				colInput = Integer.parseInt(inputData.substring(2, inputData.length()));
+				colInput = Integer.parseInt(inputData.substring(2));
 				System.out.print("Enter letter: ");
 				char letter = input.next().charAt(0);
 				if (!board.setGuess(rowInput, colInput, letter))
@@ -49,7 +50,7 @@ class Puzzle {
 				break;
 			case '*':
 				rowInput = inputData.charAt(1);
-				colInput = Integer.parseInt(inputData.substring(2, inputData.length()));
+				colInput = Integer.parseInt(inputData.substring(2));
 				List<String> hints = board.findHints(rowInput, colInput, dictionary);
 				if(hints.size() > 0) {
 					System.out.println("Hints:");
@@ -82,7 +83,7 @@ class Puzzle {
 	
 	static String loadPuzzle() throws IOException {
 		Random r = new Random();
-		String fileName = "src/quotes/quote" + r.nextInt(4) + ".txt";
+		String fileName = "src/resources/quotes/quote" + r.nextInt(4) + ".txt";
 		return Files
 				.readString(Paths.get(fileName))
 				.toUpperCase();

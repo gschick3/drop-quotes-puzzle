@@ -1,14 +1,14 @@
 package puzzle;
 
-public class BoardFormat {
-	private static String separator = "|";
-	private char space;
+class BoardFormat {
+	private static final String separator = "|";
+	private final char space;
 
 	private char[][] currentBoard;
 	private char[][] clues;
 
-	private int rows;
-	private int columns;
+	private final int rows;
+	private final int columns;
 
 	public BoardFormat(Board board) {
 		this.space = board.space;
@@ -25,31 +25,25 @@ public class BoardFormat {
 	}
 
 	public String format() {
-		/** Display current playing board */
+		/* Display current playing board */
 
-		StringBuffer result = new StringBuffer("\n\n");
-
-		result.append(formatClues());
-		result.append(formatHorizontalLine());
-
-		result.append(formatBoxes());
-
-		result.append(formatHorizontalLine());
-		result.append(formatColumnNumbers());
-
-		return result.toString();
+		return "\n\n" + formatClues() +
+				formatHorizontalLine() +
+				formatBoxes() +
+				formatHorizontalLine() +
+				formatColumnNumbers();
 	}
 
 	private String formatClues() {
-		StringBuffer result = new StringBuffer();
+		StringBuilder result = new StringBuilder();
 		for (int i = 0; i < clues[0].length; i++) {
 			result.append("  ");
-			for (int j = 0; j < clues.length; j++) {
+			for (char[] clue : clues) {
 				result.append(separator + separator);
-				if (this.clues[j][i] == space)
+				if (clue[i] == space)
 					result.append(' ');
 				else
-					result.append(clues[j][i]);
+					result.append(clue[i]);
 			}
 			result.append(separator);
 			result.append("\n");
@@ -58,21 +52,18 @@ public class BoardFormat {
 	}
 
 	private String formatHorizontalLine() {
-		StringBuffer result = new StringBuffer("  ");
-		for (int i = 0; i < columns; i++)
-			result.append("---");
-		result.append("\n");
 
-		return result.toString();
+		return "  " + "---".repeat(Math.max(0, columns)) +
+				"\n";
 	}
 
 	private String formatBoxes() {
-		StringBuffer result = new StringBuffer();
+		StringBuilder result = new StringBuilder();
 
 		for (int r = 0; r < rows; r++) {
-			result.append((char) (r + 'A') + separator); // row letter
+			result.append((char) (r + 'A')).append(separator); // row letter
 			for (int c = 0; c < columns; c++) {
-				result.append(separator + separator + currentBoard[r][c]);
+				result.append(separator + separator).append(currentBoard[r][c]);
 			}
 			result.append(separator);
 			result.append("\n");
@@ -83,7 +74,7 @@ public class BoardFormat {
 	}
 
 	private String formatColumnNumbers() {
-		StringBuffer result = new StringBuffer("  ");
+		StringBuilder result = new StringBuilder("  ");
 		for (int i = 0; i < columns; i++) {
 			result.append(separator);
 			if (i < 10)

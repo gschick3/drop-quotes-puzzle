@@ -3,7 +3,7 @@ package puzzle;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Scoreboard {
+class Scoreboard {
 	private boolean hasEmpties = true;
 
 	private List<Coord> coords = new ArrayList<>();

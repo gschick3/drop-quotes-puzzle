@@ -11,8 +11,8 @@ class Array {
 		char[][] newArray = new char[rows][columns]; // new multidimensional array
 
 		int start = 0;
-		for (int i = 0; i < newArray.length; i++) {
-			System.arraycopy(paddedArray, start, newArray[i], 0, columns); // add segments of 1d array to 2d array
+		for (char[] chars : newArray) {
+			System.arraycopy(paddedArray, start, chars, 0, columns); // add segments of 1d array to 2d array
 			start += columns;
 		}
 		return newArray;
