@@ -11,7 +11,9 @@ class Puzzle {
 	public static void main(String[] args) throws IOException {
 		boolean end = false;
 
-		Board board = new Board(loadPuzzle());
+		String quote = getQuote();
+		Board board = new Board();
+		board.loadQuote(quote, quote.length()/15);
 		BoardFormat boardFormatter = new BoardFormat(board);
 
 		Scanner input = new Scanner(System.in);
@@ -81,7 +83,7 @@ class Puzzle {
 		input.close();
 	}
 	
-	static String loadPuzzle() throws IOException {
+	static String getQuote() throws IOException {
 		Random r = new Random();
 		String fileName = "src/resources/quotes/quote" + r.nextInt(4) + ".txt";
 		return Files

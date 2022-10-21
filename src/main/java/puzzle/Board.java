@@ -7,8 +7,7 @@ class Board {
 	private static final char emptySpace = '_';
 	public final char space = '/';
 
-	private final String quote;
-	private final int rows;
+	private int rows;
 
 	private char[][] quoteArray;
 	private char[][] currentBoard;
@@ -17,21 +16,15 @@ class Board {
 	private final Scoreboard scoreboard;
 	private final List<Coord> allCoords = new ArrayList<>();
 
-	public Board(String quote) {
-		this.quote = quote;
-		this.rows = (int)Math.ceil(quote.length() / 15.0); // just somewhere around 15 spaces long
+	public Board() {
+		this.rows = 0;
 		scoreboard = new Scoreboard();
-		fillBoard();
-	}
-	public Board(String quote, int rows) {
-		this.quote = quote;
-		this.rows = rows;
-		scoreboard = new Scoreboard();
-		fillBoard();
 	}
 
-	private void fillBoard() {
-		char[] normalizedQuote = this.normalizeString(this.quote);
+	public void loadQuote(String quote, int rows) {
+		this.rows = rows > 0 ? rows : 1;
+
+		char[] normalizedQuote = this.normalizeString(quote);
 		this.quoteArray = Array.dimensionalize(normalizedQuote, this.rows); // fill complete 2d array with uppercase
 																			// letters
 		this.clues = Array.sortArray(Array.transposeArray(quoteArray)); // randomized array with letters from
@@ -61,16 +54,11 @@ class Board {
 	}
 
 	private static String addWhitespace(String string, int rows) {
-		double whitespace = whitespaceOnEachEnd(string, rows);
+		int totalWhitespace = (rows - (string.length() % rows)) % rows; // I have no idea how this works
 
-		return " ".repeat(Math.max(0, (int) Math.floor(whitespace))) +
+		return " ".repeat(Math.max(0, (int) Math.floor(totalWhitespace / 2.0))) +
 				string +
-				" ".repeat(Math.max(0, (int) Math.ceil(whitespace)));
-	}
-
-	private static double whitespaceOnEachEnd(String string, int rows) {
-		int overhang = string.length() % rows;
-		return overhang == 0 ? 0 : (rows - overhang) / 2.0;
+				" ".repeat(Math.max(0, (int) Math.ceil(totalWhitespace / 2.0)));
 	}
 
 	public char[][] getCurrentBoard() {
