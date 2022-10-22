@@ -17,8 +17,6 @@ class Puzzle {
 		BoardFormat boardFormatter = new BoardFormat(board);
 
 		Scanner input = new Scanner(System.in);
-		char rowInput;
-		int colInput;
 		
 		Hints dictionary = new Hints("src/resources/_words.txt");
 
@@ -27,33 +25,39 @@ class Puzzle {
 			System.out.print(boardFormatter.format());
 			System.out.println("Type ? for a list of commands");
 			System.out.print("> ");
-			String inputData = input.next().toLowerCase();
-			input.nextLine(); // just in case there is extra input
+			String inputData = input.next().toUpperCase();
 			var scoreboard = board.getScore();
 
+			char row;
+			int col;
 			switch (inputData.charAt(0)) {
 			case '?':
 				System.out.println("""
 
-						?\tHelp Menu
-						+[r][c]\tPlace a Letter
-						*[r][c]\tGet a Hint
-						.\tCheck Solution
-						x\tErase All Errors
-						!\tQuit""");
+						?					Help Menu
+						+[r][c] [word]		Place a Letter
+						*[r][c]				Get a Hint
+						.					Check Solution
+						x					Erase All Errors
+						!					Quit""");
 				break;
 			case '+':
-				rowInput = inputData.charAt(1);
-				colInput = Integer.parseInt(inputData.substring(2));
-				System.out.print("Enter letter: ");
-				char letter = input.next().charAt(0);
-				if (!board.setGuess(rowInput, colInput, letter))
-					System.out.println("Invalid Choice");
+				row = inputData.charAt(1);
+				col = Integer.parseInt(inputData.substring(2));
+				String word = input.nextLine().substring(1);
+				for (char c : word.toCharArray()) { // move this to Board
+					if (col >= board.getCols()) {
+						col = 0;
+						if (++row - 'A' >= board.getRows()) break;
+					}
+					board.setGuess(row, col, c);
+					col++;
+				}
 				break;
 			case '*':
-				rowInput = inputData.charAt(1);
-				colInput = Integer.parseInt(inputData.substring(2));
-				List<String> hints = board.findHints(rowInput, colInput, dictionary);
+				row = inputData.charAt(1);
+				col = Integer.parseInt(inputData.substring(2));
+				List<String> hints = board.findHints(row, col, dictionary);
 				if(hints.size() > 0) {
 					System.out.println("Hints:");
 					for(String hint: hints)
@@ -69,7 +73,7 @@ class Puzzle {
 					System.out.println("You have " + scoreboard.getErrors().size() + " error(s)");
 				}
 				break;
-			case 'x':
+			case 'X':
 				board.eraseErrors();
 				break;
 			case '!':

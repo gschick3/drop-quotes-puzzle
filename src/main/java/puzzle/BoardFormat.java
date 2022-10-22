@@ -11,7 +11,7 @@ class BoardFormat {
 	private final int columns;
 
 	public BoardFormat(Board board) {
-		this.space = board.space;
+		this.space = Board.space;
 		this.currentBoard = board.getCurrentBoard();
 		this.rows = currentBoard.length;
 		this.columns = currentBoard[0].length;

@@ -4,10 +4,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 class Board {
-	private static final char emptySpace = '_';
-	public final char space = '/';
+	public static final char emptySpace = '_';
+	public static final char space = '/';
 
 	private int rows;
+	private int columns;
 
 	private char[][] quoteArray;
 	private char[][] currentBoard;
@@ -18,7 +19,24 @@ class Board {
 
 	public Board() {
 		this.rows = 0;
+		this.columns = 0;
 		scoreboard = new Scoreboard();
+	}
+
+	public int getRows() {
+		return rows;
+	}
+	public int getCols() {
+		return columns;
+	}
+	public char[][] getCurrentBoard() {
+		return currentBoard;
+	}
+	public char[][] getClues() {
+		return clues;
+	}
+	public Scoreboard getScore() {
+		return scoreboard;
 	}
 
 	public void loadQuote(String quote, int rows) {
@@ -29,12 +47,12 @@ class Board {
 																			// letters
 		this.clues = Array.sortArray(Array.transposeArray(quoteArray)); // randomized array with letters from
 																		// each column
-		var columns = this.quoteArray[0].length; // number of characters in each row of 2d array
+		this.columns = this.quoteArray[0].length; // number of characters in each row of 2d array
 
-		this.currentBoard = new char[this.rows][columns]; // create empty board for player
+		this.currentBoard = new char[this.rows][this.columns]; // create empty board for player
 
 		for (int r = 0; r < this.rows; r++)
-			for (int c = 0; c < columns; c++)
+			for (int c = 0; c < this.columns; c++)
 				this.allCoords.add(new Coord(r, c));
 
 		for (Coord coord : allCoords) {
@@ -61,29 +79,21 @@ class Board {
 				" ".repeat(Math.max(0, (int) Math.ceil(totalWhitespace / 2.0)));
 	}
 
-	public char[][] getCurrentBoard() {
-		return currentBoard;
-	}
 
-	public char[][] getClues() {
-		return clues;
-	}
-
-	public boolean setGuess(char row, int colNum, char letter) {
+	public void setGuess(char row, int colNum, char letter) {
 		int rowNum = charToNum(row); // converts letter input into numbers starting with a = 0
-		if (this.currentBoard[rowNum][colNum] != space) { // as long as it isn't a black space
-			this.currentBoard[rowNum][colNum] = Character.toUpperCase(letter);
-			scoreboard.setErrors(findErrors());
-			scoreboard.setHasEmpties(hasEmptySpaces());
-			return true;
-		}
-		return false;
+
+		if (this.currentBoard[rowNum][colNum] == space) return; // as long as it isn't a black space
+
+		this.currentBoard[rowNum][colNum] = Character.toUpperCase(letter);
+		scoreboard.setErrors(findErrors());
+		scoreboard.setHasEmpties(hasEmptySpaces());
 	}
-	
+
 	private int charToNum(char c) {
 		return Character.toUpperCase(c) - 'A';
 	}
-	
+
 	public List<String> findHints(char row, int colNum, Hints hintFinder) {
 		List<String> clueList = new ArrayList<>();
 		for (int col: findWordRange(row, colNum)) {
@@ -91,7 +101,7 @@ class Board {
 		}
 		return hintFinder.find(clueList);
 	}
-	
+
 	private List<Integer> findWordRange(char row, int colNum) {
 		int rowNum = charToNum(row);
 		int colStart = colNum;
@@ -138,7 +148,4 @@ class Board {
 		return currentBoard[coord.x()][coord.y()] == emptySpace;
 	}
 
-	public Scoreboard getScore() {
-		return scoreboard;
-	}
 }
